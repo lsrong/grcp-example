@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package alarm;
+option go_package = "github.com/lsrong/grpc-alarm/alarm";
+
+enum CameraType {
+	Unknown = 0;
+	DaHua = 1;
+	HiK = 2;
+}
+
+enum ResponseCode {
+	Ok_200 = 0;                 // successed
+	Err_Parameter_invalid = 1;  // invalid parameter
+	Err_Device_No_Found = 2;    // device not found
+	Err_500 = 3;                // server inner failed
+}
+
+// The request message
+message AlarmRequest {
+	CameraType type = 1;
+	string szIP = 2;
+	uint32 nPort = 3;
+	string szUserName = 4;
+	string szPassword = 5;
+    string downloadUrl = 6;
+    string fileName = 7;
+    string md5Value = 8;
+}
+
+// The response message
+message AlarmReply {
+	ResponseCode code = 1;
+    string message = 2;
+}
+
+service AlarmService {
+  // call alarm interface
+  rpc SetAlarmMessage (AlarmRequest) returns (AlarmReply) {}
+}
